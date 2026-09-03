@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MedPortal — Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <div class="brand-icon-sm">&#9829;</div>
+        <span class="brand-name">MedPortal</span>
+      </div>
+      <a href="login.html" class="btn-ghost">&#128682; Sign out</a>
+    </div>
+  </header>
+
+  <main class="dashboard">
+    <!-- Greeting -->
+    <div class="greeting">
+      <h1>Good morning, <span class="text-primary">Patient</span></h1>
+      <p>Here's your health overview for today.</p>
+    </div>
+
+    <!-- Vitals -->
+    <div class="vitals-grid" id="vitals-grid"></div>
+
+    <!-- Two Column -->
+    <div class="two-col">
+      <!-- Appointments -->
+      <div class="card">
+        <div class="card-title"><span class="icon-primary">&#128197;</span> Appointments</div>
+        <div id="appointments-list" class="card-list"></div>
+      </div>
+      <!-- Prescriptions -->
+      <div class="card">
+        <div class="card-title"><span class="icon-primary">&#128138;</span> Prescriptions</div>
+        <div id="prescriptions-list" class="card-list"></div>
+      </div>
+    </div>
+
+    <!-- Test Results -->
+    <div class="card">
+      <div class="card-title"><span class="icon-primary">&#128196;</span> Recent Test Results</div>
+      <div id="results-list" class="results-list"></div>
+    </div>
+
+    <!-- Next Appointment Banner -->
+    <div class="banner" id="next-appointment-banner"></div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

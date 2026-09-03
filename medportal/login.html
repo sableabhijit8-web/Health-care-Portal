@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MedPortal — Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="login-wrapper">
+    <div class="login-container">
+      <div class="brand">
+        <div class="brand-icon">&#9829;</div>
+        <h1>MedPortal</h1>
+        <p>Your health, simplified</p>
+      </div>
+      <div class="card login-card">
+        <div class="card-header">
+          <h2>Welcome back</h2>
+          <p>Sign in to access your patient portal</p>
+        </div>
+        <form id="login-form">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <div class="input-wrapper">
+              <span class="input-icon">&#128100;</span>
+              <input type="text" id="username" placeholder="Enter your username" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="input-wrapper">
+              <span class="input-icon">&#128274;</span>
+              <input type="password" id="password" placeholder="Enter your password" />
+            </div>
+          </div>
+          <p id="error-message" class="error hidden">Invalid username or password. Please try again.</p>
+          <button type="submit" class="btn-primary">Sign In</button>
+        </form>
+        <div class="security-note">
+          <span>&#128737;</span>
+          <p>Protected by end-to-end encryption</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

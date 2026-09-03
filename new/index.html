@@ -1,0 +1,56 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LeetCode Stats</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="container">
+    <h1>LeetCode Stats</h1>
+
+    <div class="theme-controls">
+      <button id="toggle-dark-mode" title="Toggle Dark Mode">🌙</button>
+      <select id="theme-selector">
+        <option value="default">Default</option>
+        <option value="dark">Dark</option>
+        <option value="blue">Blue</option>
+      </select>
+    </div>
+
+    <div class="user-container">
+      <p>Enter your LeetCode username:</p>
+      <div class="user-input-container">
+        <input type="text" placeholder="e.g. johndoe123" id="user-input" />
+        <button id="search-btn">Search</button>
+      </div>
+    </div>
+
+    <div id="loading-spinner" class="hidden spinner"></div>
+
+    <ul id="search-history" class="search-history"></ul>
+    <button id="clear-history-btn">Clear History</button>
+
+    <div class="progress">
+      <div class="progress-item circle easy-progress">
+        <span id="easy-level"></span>
+        Easy
+      </div>
+      <div class="progress-item circle medium-progress">
+        <span id="medium-progress"></span>
+        Medium
+      </div>
+      <div class="progress-item circle hard-progress">
+        <span id="hard-level"></span>
+        Hard
+      </div>
+    </div>
+
+    <div id="stats-cards" class="stats-card"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

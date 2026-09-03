@@ -1,0 +1,210 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LeetCode Stats Viewer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    input[type="text"] {
+      width: 70%;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 15px;
+      font-size: 16px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    .progress-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .progress {
+      text-align: center;
+    }
+
+    .circle {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: conic-gradient(green var(--progress-degree, 0%), #e0e0e0 0%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: auto;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .stats-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .card {
+      flex: 1 1 45%;
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .error {
+      color: red;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>LeetCode Stats Viewer</h2>
+    <input type="text" id="user-input" placeholder="Enter LeetCode Username" />
+    <button id="search-btn">Search</button>
+
+    <div class="stats-container hidden">
+      <div class="progress-container">
+        <div class="progress">
+          <div class="circle easy-progress">0/0</div>
+          <p>Easy</p>
+        </div>
+        <div class="progress">
+          <div class="circle medium-progress">0/0</div>
+          <p>Medium</p>
+        </div>
+        <div class="progress">
+          <div class="circle hard-progress">0/0</div>
+          <p>Hard</p>
+        </div>
+      </div>
+
+      <div class="stats-cards"></div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const searchButton = document.getElementById("search-btn");
+      const usernameInput = document.getElementById("user-input");
+      const statsContainer = document.querySelector(".stats-container");
+      const easyProgressCircle = document.querySelector(".easy-progress");
+      const mediumProgressCircle = document.querySelector(".medium-progress");
+      const hardProgressCircle = document.querySelector(".hard-progress");
+      const cardStatsContainer = document.querySelector(".stats-cards");
+
+      function validateUsername(username) {
+        if (username.trim() === "") {
+          alert("Username should not be empty");
+          return false;
+        }
+        const regex = /^[a-zA-Z0-9_-]{1,39}$/;
+        const isMatching = regex.test(username);
+        if (!isMatching) {
+          alert("Invalid Username. Only letters, numbers, hyphens, and underscores (1–39 characters) allowed.");
+        }
+        return isMatching;
+      }
+
+      async function fetchUserDetails(username) {
+        try {
+          searchButton.textContent = "Searching...";
+          searchButton.disabled = true;
+          statsContainer.classList.add("hidden");
+
+          const response = await fetch(`https://leetcode-api-faisal.vercel.app/${username}`);
+          if (!response.ok) throw new Error("User not found or API error");
+
+          const parsedData = await response.json();
+          if (!parsedData.data) throw new Error("No user data found.");
+
+          displayUserData(parsedData.data);
+          statsContainer.classList.remove("hidden");
+        } catch (error) {
+          statsContainer.classList.remove("hidden");
+          statsContainer.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+        } finally {
+          searchButton.textContent = "Search";
+          searchButton.disabled = false;
+        }
+      }
+
+      function updateProgress(solved, total, circleElement) {
+        const percent = total === 0 ? 0 : (solved / total) * 100;
+        circleElement.style.setProperty("--progress-degree", `${percent}%`);
+        circleElement.textContent = `${solved}/${total}`;
+      }
+
+      function displayUserData(data) {
+        const totalEasy = data.totalEasy || 0;
+        const totalMedium = data.totalMedium || 0;
+        const totalHard = data.totalHard || 0;
+
+        const solvedEasy = data.easySolved || 0;
+        const solvedMedium = data.mediumSolved || 0;
+        const solvedHard = data.hardSolved || 0;
+
+        updateProgress(solvedEasy, totalEasy, easyProgressCircle);
+        updateProgress(solvedMedium, totalMedium, mediumProgressCircle);
+        updateProgress(solvedHard, totalHard, hardProgressCircle);
+
+        const cardsData = [
+          { label: "Total Solved", value: data.totalSolved },
+          { label: "Total Questions", value: data.totalQuestions },
+          { label: "Easy Solved", value: data.easySolved },
+          { label: "Medium Solved", value: data.mediumSolved },
+          { label: "Hard Solved", value: data.hardSolved },
+          { label: "Ranking", value: data.ranking || "N/A" }
+        ];
+
+        cardStatsContainer.innerHTML = cardsData.map(d =>
+          `<div class="card">
+              <h4>${d.label}</h4>
+              <p>${d.value}</p>
+          </div>`
+        ).join("");
+      }
+
+      searchButton.addEventListener('click', function () {
+        const username = usernameInput.value.trim();
+        if (validateUsername(username)) {
+          fetchUserDetails(username);
+        }
+      });
+
+      usernameInput.addEventListener('keypress', function (event) {
+        if (event.key === 'Enter') {
+          searchButton.click();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

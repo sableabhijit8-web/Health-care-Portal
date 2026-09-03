@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChemDB Pro - Chemical Database & Information Portal</title>
+    <meta name="description" content="Comprehensive chemical database with 50,000+ compounds, safety data, molecular structures, and lab-grade information for researchers and professionals.">
+    <meta name="author" content="ChemDB Pro">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="ChemDB Pro - Chemical Database & Information Portal">
+    <meta property="og:description" content="Comprehensive chemical database with 50,000+ compounds, safety data, molecular structures, and lab-grade information for researchers and professionals.">
+    <meta property="og:type" content="website">
+    
+    <!-- Link to CSS -->
+    <link rel="stylesheet" href="soham.css">
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-content">
+                <!-- Logo -->
+                <div class="nav-logo">
+                    <div class="logo-icon">
+                        <i data-lucide="search"></i>
+                    </div>
+                    <span class="logo-text">
+                        ChemDB<span class="logo-accent">Pro</span>
+                    </span>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="nav-menu">
+                    <a href="#database" class="nav-link">Database</a>
+                    <a href="#categories" class="nav-link">Categories</a>
+                    <a href="#safety" class="nav-link">Safety</a>
+                    <a href="#about" class="nav-link">About</a>
+                </div>
+
+                <!-- Desktop CTA -->
+                <div class="nav-cta">
+                    <button class="btn btn-ghost">Sign In</button>
+                    <button class="btn btn-primary">Get Access</button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i data-lucide="menu" id="menuIcon"></i>
+                    <i data-lucide="x" id="closeIcon" style="display: none;"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div class="mobile-menu" id="mobileMenu">
+                <div class="mobile-menu-content">
+                    <a href="#database" class="mobile-nav-link">Database</a>
+                    <a href="#categories" class="mobile-nav-link">Categories</a>
+                    <a href="#safety" class="mobile-nav-link">Safety</a>
+                    <a href="#about" class="mobile-nav-link">About</a>
+                    <div class="mobile-cta">
+                        <button class="btn btn-ghost">Sign In</button>
+                        <button class="btn btn-primary">Get Access</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-inner">
+                <h1 class="hero-title">
+                    Chemicals<span class="hero-accent">list</span>
+                </h1>
+                
+                <p class="hero-subtitle">
+                    Your comprehensive chemical database and information portal
+                </p>
+                
+                <div class="search-container">
+                    <div class="search-input-wrapper">
+                        <i data-lucide="search" class="search-icon"></i>
+                        <input type="text" placeholder="Search chemicals, compounds, formulas..." class="search-input">
+                    </div>
+                    <button class="btn btn-hero">Search Database</button>
+                </div>
+                
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i data-lucide="database"></i>
+                        </div>
+                        <h3 class="feature-title">50K+ Compounds</h3>
+                        <p class="feature-desc">Comprehensive chemical database</p>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i data-lucide="flask-conical"></i>
+                        </div>
+                        <h3 class="feature-title">Lab Grade Data</h3>
+                        <p class="feature-desc">Accurate molecular information</p>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i data-lucide="shield"></i>
+                        </div>
+                        <h3 class="feature-title">Safety First</h3>
+                        <p class="feature-desc">Complete safety profiles</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Chemicals Section -->
+    <section class="featured-chemicals">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Featured Chemicals</h2>
+                <p class="section-subtitle">
+                    Discover key compounds with detailed molecular information and safety data
+                </p>
+            </div>
+            
+            <div class="chemicals-grid" id="chemicalsGrid">
+                <!-- Chemical cards will be generated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Chemical Categories</h2>
+                <p class="section-subtitle">
+                    Explore our comprehensive database organized by chemical classification
+                </p>
+            </div>
+            
+            <div class="categories-grid" id="categoriesGrid">
+                <!-- Category cards will be generated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- JavaScript -->
+    <script src="soham.js"></script>
+</body>
+</html>

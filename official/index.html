@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Health Care Dashboard</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="container">
+    <h1>Health Care</h1>
+
+    <div class="theme-controls">
+      <button id="toggle-dark-mode" title="Toggle Dark Mode" aria-label="Toggle Dark Mode">🌙</button>
+      <select id="theme-selector" aria-label="Select Theme">
+        <option value="default">Default</option>
+        <option value="dark">Dark</option>
+        <option value="blue">Blue</option>
+      </select>
+    </div>
+
+    <div class="user-container">
+      <p>Enter your Doctor name:</p>
+      <div class="user-input-container">
+        <input type="text" placeholder="e.g. abhi123, drsmith" id="user-input" aria-label="Doctor's Username" />
+        <button id="search-btn" aria-label="Search">Search</button>
+      </div>
+    </div>
+
+    <div id="loading-spinner" class="hidden spinner" role="status" aria-label="Loading"></div>
+
+    <ul id="search-history" class="search-history" aria-label="Search History"></ul>
+    <button id="clear-history-btn" aria-label="Clear History">Clear History</button>
+
+    <div class="progress hidden">
+      <div class="progress-item circle easy-progress">
+        <span id="easy-level"></span>
+        BP patient
+      </div>
+      <div class="progress-item circle medium-progress">
+        <span id="medium-progress"></span>
+        HB patient
+      </div>
+      <div class="progress-item circle hard-progress">
+        <span id="hard-level"></span>
+        Diabetes patient
+      </div>
+      <div class="progress-item circle asthma-progress">
+        <span id="asthma-level"></span>
+        Asthma patient
+      </div>
+      <div class="progress-item circle heart-progress">
+        <span id="heart-level"></span>
+        Heart patient
+      </div>
+    </div>
+
+    <div id="stats-cards" class="stats-card hidden"></div>
+
+    <div class="feedback-container hidden">
+      <h2>Patient Feedback</h2>
+
+      <form id="feedback-form">
+        <label for="patient-name">Your Name:</label>
+        <input type="text" id="patient-name" placeholder="Enter your name" required />
+
+        <label for="patient-rating">Rating:</label>
+        <select id="patient-rating" required>
+          <option value="">Select a rating</option>
+          <option value="5">★★★★★ (Excellent)</option>
+          <option value="4">★★★★☆ (Good)</option>
+          <option value="3">★★★☆☆ (Average)</option>
+          <option value="2">★★☆☆☆ (Poor)</option>
+          <option value="1">★☆☆☆☆ (Terrible)</option>
+        </select>
+
+        <label for="patient-comment">Comment:</label>
+        <textarea id="patient-comment" placeholder="Write your feedback..." required></textarea>
+
+        <button type="submit" id="submit-feedback-btn">Submit Feedback</button>
+      </form>
+
+      <div id="feedback-list">
+        </div>
+    </div>
+    
+    <div class="appointment-container hidden">
+      <h2>Book an Appointment</h2>
+
+      <form id="appointment-form">
+        <label for="appt-patient-name">Patient Name:</label>
+        <input type="text" id="appt-patient-name" placeholder="Enter patient's name" required />
+
+        <label for="appt-date">Appointment Date:</label>
+        <input type="date" id="appt-date" required />
+
+        <label for="appt-time">Appointment Time:</label>
+        <input type="time" id="appt-time" required />
+
+        <label for="appt-reason">Reason for Visit:</label>
+        <textarea id="appt-reason" placeholder="e.g. Annual check-up" required></textarea>
+
+        <button type="submit" id="submit-appt-btn">Book Appointment</button>
+      </form>
+
+      <h3>Upcoming Appointments</h3>
+      <div id="appointment-list">
+        </div>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HealthCare Portal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f9ff;
+      text-align: center;
+      padding: 40px;
+    }
+    .container {
+      width: 400px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    h2 {
+      color: #004080;
+    }
+    input, button {
+      width: 90%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #aaa;
+      border-radius: 8px;
+    }
+    button {
+      background: #007BFF;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .hidden {
+      display: none;
+    }
+    .history {
+      text-align: left;
+      padding: 10px;
+    }
+    .logout {
+      background: #d9534f;
+      margin-top: 15px;
+    }
+    .searchBox input {
+      width: 70%;
+      display: inline-block;
+    }
+    .searchBox button {
+      width: 25%;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Login Box -->
+  <div class="container" id="loginBox">
+    <h2>HealthCare Login</h2>
+    <input type="text" id="username" placeholder="Enter Username" required>
+    <input type="password" id="password" placeholder="Enter Password" required>
+    <button onclick="login()">Login</button>
+    <p>Don't have an account? <a href="#" onclick="showRegister()">Register</a></p>
+    <p>Are you a Doctor? <a href="#" onclick="showDoctorSearch()">Doctor Search</a></p>
+  </div>
+
+  <!-- Register Box -->
+  <div class="container hidden" id="registerBox">
+    <h2>New Registration</h2>
+    <input type="text" id="newUser" placeholder="Choose Username" required>
+    <input type="password" id="newPass" placeholder="Choose Password" required>
+    <button onclick="register()">Register</button>
+    <p>Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+  </div>
+
+  <!-- Patient History Box -->
+  <div class="container hidden" id="historyBox">
+    <h2>Welcome, <span id="userDisplay"></span></h2>
+    <div class="history" id="patientHistory"></div>
+    <button class="logout" onclick="logout()">Logout</button>
+  </div>
+
+  <!-- Doctor Search Box -->
+  <div class="container hidden" id="doctorBox">
+    <h2>Doctor Patient Search</h2>
+    <div class="searchBox">
+      <input type="text" id="searchName" placeholder="Enter Patient Username">
+      <button onclick="searchPatient()">Search</button>
+    </div>
+    <div class="history" id="doctorHistory"></div>
+    <button class="logout" onclick="exitDoctor()">Exit</button>
+  </div>
+
+<script>
+  // Predefined patient database
+  const patients = {
+    "rahul": {password: "1234", history: `
+      <h3>Patient: Rahul Sharma</h3>
+      <ul>
+        <li>2010: Typhoid, recovered with antibiotics.</li>
+        <li>2014: Asthma diagnosed, inhaler prescribed.</li>
+        <li>2018: Road accident, fracture in left leg, surgery done.</li>
+        <li>2021: Diabetes detected, on Metformin.</li>
+        <li>2023: Regular check-ups for BP and cholesterol.</li>
+      </ul>
+    `},
+    "priya": {password: "5678", history: `
+      <h3>Patient: Priya Verma</h3>
+      <ul>
+        <li>2008: Chickenpox, treated fully.</li>
+        <li>2013: Migraines, ongoing treatment.</li>
+        <li>2016: Thyroid issues, lifelong medication.</li>
+        <li>2022: Pregnancy, delivered healthy baby.</li>
+        <li>2024: Annual health checkup, all normal.</li>
+      </ul>
+    `},
+    "amit": {password: "1111", history: `
+      <h3>Patient: Amit Patel</h3>
+      <ul>
+        <li>2005: Frequent fevers, malaria detected.</li>
+        <li>2010: Tonsil surgery.</li>
+        <li>2015: High BP, started medication.</li>
+        <li>2020: Covid-19 positive, mild symptoms, recovered.</li>
+        <li>2023: Knee pain, physiotherapy advised.</li>
+      </ul>
+    `},
+    "neha": {password: "2222", history: `
+      <h3>Patient: Neha Singh</h3>
+      <ul>
+        <li>2007: Dengue, hospitalized for 5 days.</li>
+        <li>2012: Skin allergy, dermatology treatment.</li>
+        <li>2017: PCOS diagnosed, under treatment.</li>
+        <li>2021: Covid vaccination, both doses complete.</li>
+        <li>2024: Annual blood tests, slightly low Vitamin D.</li>
+      </ul>
+    `},
+    "arjun": {password: "3333", history: `
+      <h3>Patient: Arjun Mehta</h3>
+      <ul>
+        <li>2006: Broken arm in sports injury.</li>
+        <li>2011: Chickenpox, recovered.</li>
+        <li>2016: Allergy to penicillin detected.</li>
+        <li>2019: Gastric issues, dietary changes suggested.</li>
+        <li>2022: Appendicitis, surgery successful.</li>
+      </ul>
+    `}
+  };
+
+  // Normal Login
+  function login() {
+    const user = document.getElementById("username").value.toLowerCase();
+    const pass = document.getElementById("password").value;
+    if (patients[user] && patients[user].password === pass) {
+      document.getElementById("loginBox").classList.add("hidden");
+      document.getElementById("historyBox").classList.remove("hidden");
+      document.getElementById("userDisplay").innerText = user;
+      document.getElementById("patientHistory").innerHTML = patients[user].history;
+    } else {
+      alert("Invalid username or password!");
+    }
+  }
+
+  function logout() {
+    document.getElementById("historyBox").classList.add("hidden");
+    document.getElementById("loginBox").classList.remove("hidden");
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+  }
+
+  // Registration
+  function showRegister() {
+    document.getElementById("loginBox").classList.add("hidden");
+    document.getElementById("registerBox").classList.remove("hidden");
+  }
+  function showLogin() {
+    document.getElementById("registerBox").classList.add("hidden");
+    document.getElementById("loginBox").classList.remove("hidden");
+  }
+  function register() {
+    const newUser = document.getElementById("newUser").value.toLowerCase();
+    const newPass = document.getElementById("newPass").value;
+    if (!newUser || !newPass) {
+      alert("Please enter both fields.");
+      return;
+    }
+    if (patients[newUser]) {
+      alert("Username already exists!");
+    } else {
+      patients[newUser] = {password: newPass, history: `
+        <h3>Patient: ${newUser}</h3>
+        <ul>
+          <li>Newly registered patient. No medical history yet.</li>
+        </ul>
+      `};
+      alert("Registration successful! Please login now.");
+      showLogin();
+    }
+  }
+
+  // Doctor Search
+  function showDoctorSearch() {
+    document.getElementById("loginBox").classList.add("hidden");
+    document.getElementById("doctorBox").classList.remove("hidden");
+  }
+  function searchPatient() {
+    const searchName = document.getElementById("searchName").value.toLowerCase();
+    if (patients[searchName]) {
+      document.getElementById("doctorHistory").innerHTML = patients[searchName].history;
+    } else {
+      document.getElementById("doctorHistory").innerHTML = "<p style='color:red;'>Patient not found.</p>";
+    }
+  }
+  function exitDoctor() {
+    document.getElementById("doctorBox").classList.add("hidden");
+    document.getElementById("loginBox").classList.remove("hidden");
+    document.getElementById("searchName").value = "";
+    document.getElementById("doctorHistory").innerHTML = "";
+  }
+</script>
+
+</body>
+</html>

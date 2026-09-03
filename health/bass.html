@@ -1,0 +1,158 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LeetCode Stats</title>
+  <style>
+    .hidden { display: none; }
+    .card {
+      border: 1px solid #ccc;
+      padding: 12px;
+      margin: 10px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .stats-container {
+      margin-top: 20px;
+    }
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+    .progress-circle {
+      height: 60px;
+      width: 60px;
+      border-radius: 50%;
+      background: conic-gradient(#4caf50 calc(var(--progress-degree, 0%) * 1%), #ccc 0%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>LeetCode User Stats</h1>
+
+  <input type="text" id="user-input" placeholder="Enter LeetCode username" />
+  <button id="search-btn">Search</button>
+
+  <div class="stats-container hidden">
+    <div class="progress-row" style="display: flex; gap: 20px; margin-top: 20px;">
+      <div class="progress-circle easy-progress"><span id="easy-label">0/0</span></div>
+      <div class="progress-circle medium-progress"><span id="medium-label">0/0</span></div>
+      <div class="progress-circle hard-progress"><span id="hard-label">0/0</span></div>
+    </div>
+
+    <div class="stats-cards" style="display: flex; flex-wrap: wrap;"></div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const searchButton = document.getElementById("search-btn");
+      const usernameInput = document.getElementById("user-input");
+      const statsContainer = document.querySelector(".stats-container");
+      const easyProgressCircle = document.querySelector(".easy-progress");
+      const mediumProgressCircle = document.querySelector(".medium-progress");
+      const hardProgressCircle = document.querySelector(".hard-progress");
+      const easyLabel = document.getElementById("easy-label");
+      const mediumLabel = document.getElementById("medium-label");
+      const hardLabel = document.getElementById("hard-label");
+      const cardStatsContainer = document.querySelector(".stats-cards");
+
+      function validateUsername(username) {
+        if (username.trim() === "") {
+          alert("Username should not be empty");
+          return false;
+        }
+        const regex = /^[a-zA-Z0-9_-]{1,39}$/;
+        const isMatching = regex.test(username);
+        if (!isMatching) {
+          alert("Invalid Username. Only letters, numbers, hyphens, and underscores (1–39 characters) allowed.");
+        }
+        return isMatching;
+      }
+
+      async function fetchUserDetails(username) {
+        try {
+          searchButton.textContent = "Searching...";
+          searchButton.disabled = true;
+          statsContainer.classList.add("hidden");
+
+          const response = await fetch(`https://leetcode-api-faisal.vercel.app/${username}`);
+          const parsedData = await response.json();
+
+          if (parsedData.status !== "success" || !parsedData.data) {
+            throw new Error("No user data found.");
+          }
+
+          displayUserData(parsedData.data);
+          statsContainer.classList.remove("hidden");
+        } catch (error) {
+          statsContainer.classList.remove("hidden");
+          statsContainer.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+          console.error("Fetch error:", error);
+        } finally {
+          searchButton.textContent = "Search";
+          searchButton.disabled = false;
+        }
+      }
+
+      function updateProgress(solved, total, labelElement, circleElement) {
+        if (total === 0) {
+          labelElement.textContent = `${solved}/0`;
+          circleElement.style.setProperty("--progress-degree", `0%`);
+          return;
+        }
+        const progressPercentage = (solved / total) * 100;
+        circleElement.style.setProperty("--progress-degree", `${progressPercentage}%`);
+        labelElement.textContent = `${solved}/${total}`;
+      }
+
+      function displayUserData(data) {
+        const { easySolved, mediumSolved, hardSolved, totalSolved, totalQuestions, totalSubmissions } = data;
+
+        const easyTotal = data.totalEasy || 0;
+        const mediumTotal = data.totalMedium || 0;
+        const hardTotal = data.totalHard || 0;
+
+        updateProgress(easySolved, easyTotal, easyLabel, easyProgressCircle);
+        updateProgress(mediumSolved, mediumTotal, mediumLabel, mediumProgressCircle);
+        updateProgress(hardSolved, hardTotal, hardLabel, hardProgressCircle);
+
+        const cardsData = [
+          { label: "Total Solved", value: totalSolved },
+          { label: "Total Questions", value: totalQuestions },
+          { label: "Easy Solved", value: easySolved },
+          { label: "Medium Solved", value: mediumSolved },
+          { label: "Hard Solved", value: hardSolved },
+          { label: "Total Submissions", value: totalSubmissions },
+        ];
+
+        cardStatsContainer.innerHTML = cardsData.map(data =>
+          `<div class="card">
+              <h4>${data.label}</h4>
+              <p>${data.value}</p>
+          </div>`
+        ).join("");
+      }
+
+      searchButton.addEventListener('click', function () {
+        const username = usernameInput.value.trim();
+        if (validateUsername(username)) {
+          fetchUserDetails(username);
+        }
+      });
+
+      usernameInput.addEventListener('keypress', function (event) {
+        if (event.key === 'Enter') {
+          searchButton.click();
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
